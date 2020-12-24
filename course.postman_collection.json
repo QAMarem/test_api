@@ -1,0 +1,810 @@
+{
+	"info": {
+		"_postman_id": "b9554c59-95e0-4530-af18-8430b3d84665",
+		"name": "course",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "xml",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:wrap=\"http://foo.bar/wrappersoapserver\">\n   <soapenv:Header/>\n   <soapenv:Body>\n      <wrap:doRegister>\n         <email>test1111@test.com</email>\n         <name>21fsfsvfv</name>\n         <password>1</password>\n      </wrap:doRegister>\n   </soapenv:Body>\n</soapenv:Envelope>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://users.bugred.ru/tasks/soap/doregister",
+					"protocol": "http",
+					"host": [
+						"users",
+						"bugred",
+						"ru"
+					],
+					"path": [
+						"tasks",
+						"soap",
+						"doregister"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "basic-auth",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// var srt_token = \"postman:password\";",
+							"// var word_array = CryptoJS.enc.Utf8.parse(srt_token);",
+							"// var base64 = CryptoJS.enc.Base64.stringify(word_array);",
+							"// console.log(base64)",
+							"",
+							"// function getAll(key) {",
+							"//    let result = [];",
+							"//    key = key.toLowerCase();",
+							"//    pm.request.headers.each((header) => {",
+							"//        if (String(header.key).toLowerCase() === key) {",
+							"//            result.push(header.valueOf());",
+							"//        }",
+							"//    });",
+							"//    return result;",
+							"// }",
+							"",
+							"// const request_1 = {",
+							"//     url: \"https://postman-echo.com/basic-auth\",",
+							"//     method: \"GET\",",
+							"//     header: \"Authorization: Basic \"+base64+\"\"",
+							"// }",
+							"",
+							"// pm.sendRequest(request_1, function(err, res) {",
+							"//     pm.environment.set(\"basic_token\", getAll('authorization'));",
+							"// })",
+							"",
+							"",
+							"",
+							"// pm.sendRequest('https://postman-echo.com/time/now', function (err, res) {",
+							"//     if (err) { console.log(err); }",
+							"//     else {",
+							"//         console.log(res)",
+							"//         var currentTime = res.stream.toString();",
+							"//         console.log(currentTime);",
+							"//         pm.environment.set(\"currentTime\", currentTime);",
+							"//     }",
+							"// });",
+							"",
+							"// pm.environment.clear();",
+							"",
+							"// pm.environment.set(\"name\", \"Anfisa\")",
+							"// console.log(pm.environment.get(\"name\"))",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{basic_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://postman-echo.com/basic-auth",
+					"protocol": "https",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"basic-auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registration user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body include name\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"name\");",
+							"});",
+							"",
+							"pm.test(\"Cache-Control is present\", function () {",
+							"    pm.response.to.have.header(\"Cache-Control\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202, 200]);",
+							"});",
+							"",
+							"pm.test(\"Status code name has string\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"",
+							"var schema = {\"type\":\"object\",",
+							"\"required\": [\"name\", \"birthday\", \"email\"],",
+							"\"properties\": {",
+							"    \"name\": {\"type\": \"string\"},",
+							"    \"email\":{\"type\": \"string\"}",
+							"},};",
+							"",
+							"pm.test(\"Validate schema\", () => {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"})",
+							"",
+							"",
+							"const jsonDataReq = JSON.parse(pm.request.body)",
+							"console.log(jsonDataReq)",
+							"var req_email = jsonDataReq.email",
+							"console.log(req_email)",
+							"",
+							"const jsonDataRes = pm.response.json()",
+							"console.log(jsonDataRes)",
+							"var res_email = jsonDataRes.email",
+							"console.log(res_email)",
+							"",
+							"pm.environment.set(\"email\", res_email);",
+							"",
+							"",
+							"// pm.test(\"Compare email\", function () {",
+							"//  pm.expect(res_email).not.to.eql(req_email); });",
+							"",
+							" pm.test(\"Compare email\", function () {",
+							" pm.expect(res_email).to.eql(req_email); });",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n    \"email\": \"anfisa{{$guid}}@gmail.com\",\n    \"name\": \"Anfisa{{$randomAlphaNumeric}}+{{$randomFullName}}\",\n    \"password\": \"1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://users.bugred.ru/tasks/rest/doregister",
+					"protocol": "http",
+					"host": [
+						"users",
+						"bugred",
+						"ru"
+					],
+					"path": [
+						"tasks",
+						"rest",
+						"doregister"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add avatar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "avatar",
+							"type": "file",
+							"src": []
+						},
+						{
+							"key": "email",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://users.bugred.ru/tasks/rest/addavatar?email=<string>",
+					"protocol": "http",
+					"host": [
+						"users",
+						"bugred",
+						"ru"
+					],
+					"path": [
+						"tasks",
+						"rest",
+						"addavatar"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "<string>"
+						}
+					]
+				},
+				"description": "Возможные форматы картинки: jpg, png.\nМаксимальный размер файла: 150 кб"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete avatar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://users.bugred.ru/tasks/rest/deleteavatar?email=<string>",
+					"protocol": "http",
+					"host": [
+						"users",
+						"bugred",
+						"ru"
+					],
+					"path": [
+						"tasks",
+						"rest",
+						"deleteavatar"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "<string>"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://users.bugred.ru/tasks/rest/deleteuser?email={{email}}",
+					"protocol": "http",
+					"host": [
+						"users",
+						"bugred",
+						"ru"
+					],
+					"path": [
+						"tasks",
+						"rest",
+						"deleteuser"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "{{email}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://users.bugred.ru/tasks/rest/getuser?email={{email}}",
+					"protocol": "http",
+					"host": [
+						"users",
+						"bugred",
+						"ru"
+					],
+					"path": [
+						"tasks",
+						"rest",
+						"getuser"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "{{email}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "mock_request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://1b610dd1-437e-476e-b31e-ea17a1e5ff1c.mock.pstmn.io/user",
+					"protocol": "https",
+					"host": [
+						"1b610dd1-437e-476e-b31e-ea17a1e5ff1c",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "mock_request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://1b610dd1-437e-476e-b31e-ea17a1e5ff1c.mock.pstmn.io/user",
+							"protocol": "https",
+							"host": [
+								"1b610dd1-437e-476e-b31e-ea17a1e5ff1c",
+								"mock",
+								"pstmn",
+								"io"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 22 Dec 2020 15:41:18 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "x-srv-trace",
+							"value": "v=1;t=04d38851740453a1"
+						},
+						{
+							"key": "x-srv-span",
+							"value": "v=1;s=0661228470548fe8"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "120"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "118"
+						},
+						{
+							"key": "X-RateLimit-Reset",
+							"value": "1608651729"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"a4-7hO0T/XLq3TuFViTu2ZVQQdIY+A\""
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"User\": {\n        \"name\": \"Ivan\",\n        \"telephone\": \"555-555\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "https://petstore.swagger.io/oauth/authorize",
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "value",
+							"value": "abc123",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "test",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://petstore.swagger.io/oauth/authorize",
+					"protocol": "https",
+					"host": [
+						"petstore",
+						"swagger",
+						"io"
+					],
+					"path": [
+						"oauth",
+						"authorize"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "test_mock_request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://0016b56a-5baf-485c-ad5e-4c6e3981231d.mock.pstmn.io",
+					"protocol": "https",
+					"host": [
+						"0016b56a-5baf-485c-ad5e-4c6e3981231d",
+						"mock",
+						"pstmn",
+						"io"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "test_mock_request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"name\": \"string\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://0016b56a-5baf-485c-ad5e-4c6e3981231d.mock.pstmn.io/user",
+							"protocol": "https",
+							"host": [
+								"0016b56a-5baf-485c-ad5e-4c6e3981231d",
+								"mock",
+								"pstmn",
+								"io"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"status": "Create",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 22 Dec 2020 19:18:50 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "x-srv-trace",
+							"value": "v=1;t=8223ceb4131f116f"
+						},
+						{
+							"key": "x-srv-span",
+							"value": "v=1;s=b54ec483026434d2"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "120"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "119"
+						},
+						{
+							"key": "X-RateLimit-Reset",
+							"value": "1608664790"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"96-S/5iQ2y1qqIInh5BwoPc+chvDJU\""
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						}
+					],
+					"cookie": [],
+					"body": "{\n        \"name\": \"Ivan\"\n}"
+				},
+				{
+					"name": "test_mock_request_user",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://0016b56a-5baf-485c-ad5e-4c6e3981231d.mock.pstmn.io/user",
+							"protocol": "https",
+							"host": [
+								"0016b56a-5baf-485c-ad5e-4c6e3981231d",
+								"mock",
+								"pstmn",
+								"io"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 22 Dec 2020 19:18:50 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Server",
+							"value": "nginx"
+						},
+						{
+							"key": "x-srv-trace",
+							"value": "v=1;t=8223ceb4131f116f"
+						},
+						{
+							"key": "x-srv-span",
+							"value": "v=1;s=b54ec483026434d2"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "120"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "119"
+						},
+						{
+							"key": "X-RateLimit-Reset",
+							"value": "1608664790"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"96-S/5iQ2y1qqIInh5BwoPc+chvDJU\""
+						},
+						{
+							"key": "Vary",
+							"value": "Accept-Encoding"
+						},
+						{
+							"key": "Content-Encoding",
+							"value": "gzip"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"User\": {\n        \"name\": \"Anfisa\",\n        \"telephone\": \"5555-5555\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "mock_user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"dsds\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://0016b56a-5baf-485c-ad5e-4c6e3981231d.mock.pstmn.io/user",
+					"protocol": "https",
+					"host": [
+						"0016b56a-5baf-485c-ad5e-4c6e3981231d",
+						"mock",
+						"pstmn",
+						"io"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
